@@ -27,6 +27,9 @@ var AsteroidsGame = (function () {
                 this.playerShip.draw();
             var newAsteroids_1 = [];
             this.asteroids.forEach(function (asteroid) {
+                if (!asteroid || asteroid.living == false) {
+                    return;
+                }
                 asteroid.draw();
                 var collided = asteroid.checkCollision(_this.playerShip);
                 if (collided) {
@@ -41,7 +44,7 @@ var AsteroidsGame = (function () {
                     }
                 });
             });
-            this.asteroids = this.asteroids.filter(function (asteroid) { return asteroid.living; });
+            this.asteroids = this.asteroids.filter(function (asteroid) { return asteroid === null || asteroid === void 0 ? void 0 : asteroid.living; });
             this.asteroids = this.asteroids.concat(newAsteroids_1);
             if (!this.playerShip.living) {
                 this.p5instance.fill("#000");

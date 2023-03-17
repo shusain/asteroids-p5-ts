@@ -30,6 +30,9 @@ export class AsteroidsGame {
         this.playerShip.draw()
       let newAsteroids:Array<Asteroid> = [];
       this.asteroids.forEach(asteroid => {
+        if(!asteroid || asteroid.living == false) {
+          return;
+        }
         asteroid.draw()
         let collided = asteroid.checkCollision(this.playerShip)
         if(collided){
@@ -44,7 +47,7 @@ export class AsteroidsGame {
           }
         })
       })
-      this.asteroids = this.asteroids.filter(asteroid => asteroid.living)
+      this.asteroids = this.asteroids.filter(asteroid => asteroid?.living)
       this.asteroids = this.asteroids.concat(newAsteroids)
   
       if(!this.playerShip.living) {
