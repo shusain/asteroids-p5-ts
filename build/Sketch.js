@@ -4,11 +4,11 @@ var s = function (sketch) {
     sketch.setup = function () {
         console.log("🚀 - Setup initialized - P5 is running");
         game = new AsteroidsGame(sketch);
-        sketch.createCanvas(sketch.windowWidth, sketch.windowHeight);
+        sketch.createCanvas(window.innerWidth, window.innerHeight);
         sketch.rectMode(sketch.CENTER).noFill().frameRate(60);
     };
     sketch.windowResized = function () {
-        sketch.resizeCanvas(sketch.windowWidth, sketch.windowHeight);
+        sketch.resizeCanvas(window.innerWidth, window.innerHeight);
     };
     sketch.draw = function () {
         sketch.background("#0055ff");
