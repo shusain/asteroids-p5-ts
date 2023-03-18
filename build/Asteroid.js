@@ -61,6 +61,7 @@ var Asteroid = (function (_super) {
         var cg = this.cachedGraphics;
         cg.strokeWeight(1);
         cg.fill("#555");
+        cg.pixelDensity(1);
         this.polygon(this.width / 2, this.width / 2, this.width / 2, this.sides, cg);
     };
     Asteroid.prototype.polygon = function (x, y, radius, npoints, cg) {

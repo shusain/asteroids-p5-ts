@@ -7,7 +7,7 @@ const s = ( sketch:p5 ) => {
     console.log("🚀 - Setup initialized - P5 is running");
     game = new AsteroidsGame(sketch);
     sketch.createCanvas(window.innerWidth, window.innerHeight)
-    sketch.rectMode(sketch.CENTER).noFill().frameRate(60);
+    sketch.rectMode(sketch.CENTER).noFill().frameRate(50);
     sketch.pixelDensity(1)
   };
   sketch.windowResized = () => {
