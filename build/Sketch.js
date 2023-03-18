@@ -6,6 +6,7 @@ var s = function (sketch) {
         game = new AsteroidsGame(sketch);
         sketch.createCanvas(window.innerWidth, window.innerHeight);
         sketch.rectMode(sketch.CENTER).noFill().frameRate(60);
+        sketch.pixelDensity(1);
     };
     sketch.windowResized = function () {
         sketch.resizeCanvas(window.innerWidth, window.innerHeight);
