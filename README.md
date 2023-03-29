@@ -1,7 +1,5 @@
 # asteroids-p5-ts
 
-<video src="recording.mp4"/>
-
 https://shusain.github.io/asteroids-p5-ts
 
 Use 
@@ -13,3 +11,6 @@ Use
 spacebar - shoot
 
 Avoid the enemy ship and destroy all the asteroids... go get yourself a cookie if you won ;)
+
+
+<video src="recording.mp4"></video>
