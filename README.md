@@ -1,3 +1,3 @@
 # asteroids-p5-ts
 
-<video src="recording.webm"/>
+<video src="recording.mp4"/>
