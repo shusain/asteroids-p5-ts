@@ -1,9 +1,11 @@
 import { PlayerShip } from './PlayerShip.js';
 import { Asteroid } from './Asteroid.js';
 import { UI } from './UI.js';
+import { Enemy } from './Enemy.js';
 var AsteroidsGame = (function () {
     function AsteroidsGame(p5instance) {
         this.asteroids = [];
+        this.enemies = [];
         this.gameStarted = false;
         this.playerShip = new PlayerShip(p5instance);
         this.playerShip.x = p5instance.windowWidth / 2;
@@ -12,6 +14,8 @@ var AsteroidsGame = (function () {
         for (var i = 0; i < 10; i++) {
             this.asteroids.push(new Asteroid(p5instance));
         }
+        var enemey = new Enemy(p5instance, this.playerShip, p5instance.random(p5instance.width), p5instance.random(p5instance.height), 2, 50);
+        this.enemies.push(enemey);
         this.p5instance = p5instance;
     }
     AsteroidsGame.prototype.draw = function () {
@@ -25,6 +29,14 @@ var AsteroidsGame = (function () {
             this.ui.drawScore();
             if (this.playerShip.living)
                 this.playerShip.draw();
+            this.enemies.forEach(function (enemy) {
+                enemy.update();
+                enemy.draw();
+                if (enemy.checkCollision(_this.playerShip)) {
+                    _this.playerShip.destroyed();
+                    return;
+                }
+            });
             var newAsteroids_1 = [];
             this.asteroids.forEach(function (asteroid) {
                 if (!asteroid || asteroid.living == false) {

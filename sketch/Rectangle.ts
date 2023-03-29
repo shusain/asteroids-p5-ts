@@ -13,6 +13,7 @@ export class Rectangle {
   thrust(amountN: number) {
     this.xVelocity += amountN*this.p5Instance.cos(this.headingAngle);
     this.yVelocity += amountN*this.p5Instance.sin(this.headingAngle);
+    if(amountN != -this.drag)
     console.log('thrusting', amountN, this.xVelocity, this.yVelocity, this.headingAngle)
   }
   turn(direction: number){
@@ -24,38 +25,38 @@ export class Rectangle {
       this.y < rect.y + rect.height &&
       this.y + this.height > rect.y);
   }
-  draw() {
+  update() {
     this.x += this.xVelocity;
     this.y += this.yVelocity;
-    if(this.xVelocity > 0) {
-      this.xVelocity -= this.drag;
-    } else {
-      this.xVelocity += this.drag;
+
+    // Update velocity based on drag
+    this.xVelocity *= 1 - this.drag;
+    this.yVelocity *= 1 - this.drag;
+
+    if (Math.abs(this.xVelocity) < 0.01) {
+      this.xVelocity = 0;
     }
-    if(this.yVelocity > 0) {
-      this.yVelocity -= this.drag;
-    } else {
-      this.yVelocity += this.drag;
+    if (Math.abs(this.yVelocity) < 0.01) {
+      this.yVelocity = 0;
     }
-    if(Math.abs(this.xVelocity) < 1) {
-      this.xVelocity = 0
-    }
-    if(Math.abs(this.yVelocity) < 1) {
-      this.yVelocity = 0
-    }
-    
+
+    // Update position based on screen boundaries
     let canvas = this.p5Instance;
-    if(this.x > canvas.windowWidth) {
+    if (this.x > canvas.windowWidth) {
       this.x = 0;
     }
-    if(this.y > canvas.windowHeight) {
+    if (this.y > canvas.windowHeight) {
       this.y = 0;
     }
-    if(this.y < 0) {
+    if (this.y < 0) {
       this.y = canvas.windowHeight;
     }
-    if(this.x < 0) {
+    if (this.x < 0) {
       this.x = canvas.windowWidth;
     }
+  }
+
+  draw() {
+    this.update(); // Call the update method before drawing
   }
 }

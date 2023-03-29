@@ -93,14 +93,18 @@ export class PlayerShip extends Rectangle {
       }
     }
   }
+
+  update() {
+    if (this.thrustAmount != 0) {
+      this.thrust(this.thrustAmount);
+    }
+    if (this.rotationAmount) {
+      this.turn(this.rotationAmount);
+    }
+    super.update(); // Call the update method of the parent Rectangle class
+  }
   draw() {
-    if(this.thrustAmount != 0) {
-      this.thrust(this.thrustAmount)
-    }
-    if(this.rotationAmount) {
-      this.turn(this.rotationAmount)
-    }
-    super.draw()
+    this.update(); // Call the update method before drawing
     let canvas = this.p5Instance;
     canvas.push()
     canvas.stroke("#000")

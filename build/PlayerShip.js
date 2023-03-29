@@ -106,14 +106,17 @@ var PlayerShip = (function (_super) {
             }
         };
     };
-    PlayerShip.prototype.draw = function () {
+    PlayerShip.prototype.update = function () {
         if (this.thrustAmount != 0) {
             this.thrust(this.thrustAmount);
         }
         if (this.rotationAmount) {
             this.turn(this.rotationAmount);
         }
-        _super.prototype.draw.call(this);
+        _super.prototype.update.call(this);
+    };
+    PlayerShip.prototype.draw = function () {
+        this.update();
         var canvas = this.p5Instance;
         canvas.push();
         canvas.stroke("#000");

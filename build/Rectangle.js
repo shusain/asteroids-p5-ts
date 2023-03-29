@@ -16,7 +16,8 @@ var Rectangle = (function () {
     Rectangle.prototype.thrust = function (amountN) {
         this.xVelocity += amountN * this.p5Instance.cos(this.headingAngle);
         this.yVelocity += amountN * this.p5Instance.sin(this.headingAngle);
-        console.log('thrusting', amountN, this.xVelocity, this.yVelocity, this.headingAngle);
+        if (amountN != -this.drag)
+            console.log('thrusting', amountN, this.xVelocity, this.yVelocity, this.headingAngle);
     };
     Rectangle.prototype.turn = function (direction) {
         this.headingAngle += direction * Math.PI / 180;
@@ -27,25 +28,15 @@ var Rectangle = (function () {
             this.y < rect.y + rect.height &&
             this.y + this.height > rect.y);
     };
-    Rectangle.prototype.draw = function () {
+    Rectangle.prototype.update = function () {
         this.x += this.xVelocity;
         this.y += this.yVelocity;
-        if (this.xVelocity > 0) {
-            this.xVelocity -= this.drag;
-        }
-        else {
-            this.xVelocity += this.drag;
-        }
-        if (this.yVelocity > 0) {
-            this.yVelocity -= this.drag;
-        }
-        else {
-            this.yVelocity += this.drag;
-        }
-        if (Math.abs(this.xVelocity) < 1) {
+        this.xVelocity *= 1 - this.drag;
+        this.yVelocity *= 1 - this.drag;
+        if (Math.abs(this.xVelocity) < 0.01) {
             this.xVelocity = 0;
         }
-        if (Math.abs(this.yVelocity) < 1) {
+        if (Math.abs(this.yVelocity) < 0.01) {
             this.yVelocity = 0;
         }
         var canvas = this.p5Instance;
@@ -61,6 +52,9 @@ var Rectangle = (function () {
         if (this.x < 0) {
             this.x = canvas.windowWidth;
         }
+    };
+    Rectangle.prototype.draw = function () {
+        this.update();
     };
     return Rectangle;
 }());
