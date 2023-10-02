@@ -16,16 +16,35 @@ var __extends = (this && this.__extends) || (function () {
 import { Rectangle } from './Rectangle.js';
 var Button = (function (_super) {
     __extends(Button, _super);
-    function Button(p5Instance, text, buttonClickHandler) {
-        var _this = _super.call(this, p5Instance) || this;
-        _this.text = text;
+    function Button(_p5, x, y, width, height, label, graphics, buttonClickHandler) {
+        var _this = _super.call(this, _p5) || this;
+        _this._p5 = _p5;
+        _this.x = x;
+        _this.y = y;
+        _this.width = width;
+        _this.height = height;
+        _this.label = label;
+        _this.graphics = graphics;
         _this.buttonClickHandler = buttonClickHandler;
-        _this.height = 25;
-        _this.width = _this.text.length * 20;
-        _this.x = _this.p5Instance.windowWidth / 2;
-        _this.y = _this.p5Instance.windowHeight / 2;
+        _this.x = x;
+        _this.y = y;
+        _this.width = width;
+        _this.height = height;
+        _this.label = label;
+        _this.graphics = _p5.createGraphics(width, height);
+        _this.graphics.pixelDensity(2);
+        _this.buttonClickHandler = buttonClickHandler;
+        _this.renderGraphics();
         return _this;
     }
+    Button.prototype.renderGraphics = function () {
+        this.graphics.clear(0, 0, 0, 0);
+        this.graphics.fill(200);
+        this.graphics.rect(0, 0, this.width, this.height);
+        this.graphics.fill(0);
+        this.graphics.textAlign(this.graphics.CENTER, this.graphics.CENTER);
+        this.graphics.text(this.label, this.width / 2, this.height / 2);
+    };
     Button.prototype.checkCollision = function (rect) {
         return (this.x < rect.x + rect.width &&
             this.x + this.width > rect.x &&
@@ -33,22 +52,16 @@ var Button = (function (_super) {
             this.y + this.height > rect.y);
     };
     Button.prototype.draw = function () {
-        var canvas = this.p5Instance;
-        if (canvas.mouseIsPressed && this.checkCollision(new Rectangle(this.p5Instance, 0, canvas.mouseX + this.width / 2, canvas.mouseY))) {
+        var canvas = this._p5;
+        canvas.rect(this.x + this.width / 2, this.y + this.height / 2, this.width, this.height);
+        if (canvas.mouseIsPressed && this.checkCollision(new Rectangle(canvas, 0, canvas.mouseX, canvas.mouseY))) {
             canvas.fill("#fff");
             this.buttonClickHandler();
         }
         else {
             canvas.fill("#ddd");
         }
-        canvas.push();
-        canvas.translate(this.x, this.y);
-        canvas.rectMode(canvas.CORNER);
-        canvas.rect(-this.width / 2, -this.height / 2, this.width, this.height);
-        canvas.fill("#000");
-        canvas.textSize(20);
-        canvas.text(this.text, -this.width / 4, this.height / 2 - 6);
-        canvas.pop();
+        canvas.image(this.graphics, this.x, this.y);
     };
     return Button;
 }(Rectangle));

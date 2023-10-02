@@ -16,8 +16,6 @@ var Rectangle = (function () {
     Rectangle.prototype.thrust = function (amountN) {
         this.xVelocity += amountN * this.p5Instance.cos(this.headingAngle);
         this.yVelocity += amountN * this.p5Instance.sin(this.headingAngle);
-        if (amountN != -this.drag)
-            console.log('thrusting', amountN, this.xVelocity, this.yVelocity, this.headingAngle);
     };
     Rectangle.prototype.turn = function (direction) {
         this.headingAngle += direction * Math.PI / 180;

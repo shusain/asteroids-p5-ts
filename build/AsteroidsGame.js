@@ -3,20 +3,22 @@ import { Asteroid } from './Asteroid.js';
 import { UI } from './UI.js';
 import { Enemy } from './Enemy.js';
 var AsteroidsGame = (function () {
-    function AsteroidsGame(p5instance) {
+    function AsteroidsGame(_p5) {
         this.asteroids = [];
         this.enemies = [];
         this.gameStarted = false;
-        this.playerShip = new PlayerShip(p5instance);
-        this.playerShip.x = p5instance.windowWidth / 2;
-        this.playerShip.y = p5instance.windowHeight / 2;
-        this.ui = new UI(p5instance, this.playerShip);
+        this.playerShip = new PlayerShip(_p5);
+        this.playerShip.x = _p5.windowWidth / 2;
+        this.playerShip.y = _p5.windowHeight / 2;
+        this.ui = new UI(_p5, this.playerShip);
         for (var i = 0; i < 10; i++) {
-            this.asteroids.push(new Asteroid(p5instance));
+            this.asteroids.push(new Asteroid(_p5));
         }
-        var enemey = new Enemy(p5instance, this.playerShip, p5instance.random(p5instance.width), p5instance.random(p5instance.height), 2, 50);
+        var enemey = new Enemy(_p5, this.playerShip, _p5.random(_p5.width), _p5.random(_p5.height), 2, 50);
         this.enemies.push(enemey);
-        this.p5instance = p5instance;
+        this.ui.updateLives(this.playerShip.lives);
+        this.ui.updateLives(this.playerShip.lives);
+        this._p5 = _p5;
     }
     AsteroidsGame.prototype.draw = function () {
         var _this = this;
@@ -27,6 +29,7 @@ var AsteroidsGame = (function () {
         }
         else {
             this.ui.drawScore();
+            this.ui.drawLives();
             if (this.playerShip.living)
                 this.playerShip.draw();
             this.enemies.forEach(function (enemy) {
@@ -34,6 +37,7 @@ var AsteroidsGame = (function () {
                 enemy.draw();
                 if (enemy.checkCollision(_this.playerShip)) {
                     _this.playerShip.destroyed();
+                    _this.ui.updateLives(_this.playerShip.lives);
                     return;
                 }
             });
@@ -46,11 +50,13 @@ var AsteroidsGame = (function () {
                 var collided = asteroid.checkCollision(_this.playerShip);
                 if (collided) {
                     _this.playerShip.destroyed();
+                    _this.ui.updateLives(_this.playerShip.lives);
                     newAsteroids_1 = newAsteroids_1.concat(asteroid.destroyed());
                 }
                 _this.playerShip.bullets.forEach(function (bullet) {
                     if (bullet.checkCollision(asteroid)) {
                         _this.playerShip.score += 100;
+                        _this.ui.updateScore(_this.playerShip.score);
                         newAsteroids_1 = newAsteroids_1.concat(asteroid.destroyed());
                         _this.playerShip.bullets.splice(_this.playerShip.bullets.indexOf(bullet), 1);
                     }
@@ -59,8 +65,9 @@ var AsteroidsGame = (function () {
             this.asteroids = this.asteroids.filter(function (asteroid) { return asteroid === null || asteroid === void 0 ? void 0 : asteroid.living; });
             this.asteroids = this.asteroids.concat(newAsteroids_1);
             if (!this.playerShip.living) {
-                this.p5instance.fill("#000");
-                this.p5instance.text("Game Over", this.p5instance.width / 2, this.p5instance.height / 2);
+                this._p5.fill("#000");
+                this.ui.startGamePressed = false;
+                this._p5.text("Game Over", this._p5.width / 2, this._p5.height / 2);
             }
         }
     };
